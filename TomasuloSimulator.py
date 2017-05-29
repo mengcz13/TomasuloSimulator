@@ -150,11 +150,13 @@ class TomasuloSimulator(object):
                     if self.reserve_stations[name][t]['time'] == 0:
                         self.inss[resv1['insr']]['state']['exec'] = self.iter
                         terminate_list.append(resv1['insr'])
+                    if self.reserve_stations[name][t]['time'] < 0:
+                        self.reserve_stations[name][t]['time'] = 0
 
         for name, resv in self.reserve_stations.items():
             for t in range(len(resv)):
                 resv1 = self.reserve_stations[name][t]
-                if resv1['insr'] not in terminate_list and resv1['busy'] and resv1['time'] == -1:
+                if resv1['insr'] not in terminate_list and resv1['busy'] and resv1['time'] == 0:
                     self.reserve_stations[name][t]['busy'] = False
                     res = 0
                     self.inss[resv1['insr']]['state']['write'] = self.iter
